@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NexaHelix — Documentation</title>
+<meta name="description" content="Requirements Intelligence, from raw documents to traceable specifications. NexaHelix system documentation.">
+<style>
+  :root{
+    --neon:#00FF41;
+    --neon-08:rgba(0,255,65,0.08);
+    --neon-10:rgba(0,255,65,0.10);
+    --neon-15:rgba(0,255,65,0.15);
+    --neon-20:rgba(0,255,65,0.20);
+    --neon-30:rgba(0,255,65,0.30);
+    --neon-40:rgba(0,255,65,0.40);
+    --lime:#C8D44C;
+    --sage:#A6BD8F;
+    --red:#FF4444;
+    --amber:#F2B705;
+    --bg:#050505;
+    --bg-card:#0a0a0a;
+    --bg-elevated:#111111;
+    --border:hsl(215,25%,18%);
+    --border-light:#2a2a2a;
+    --text-primary:#ffffff;
+    --text-secondary:#cccccc;
+    --text-muted:#8a8a8a;
+    --text-dim:#666666;
+    --text-faint:#4d4d4d;
+    --font-heading:"DM Sans","SF Pro Display",-apple-system,BlinkMacSystemFont,sans-serif;
+    --font-mono:"DM Mono","SF Mono","Fira Code",ui-monospace,Menlo,monospace;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--font-mono);
+    background-color:var(--bg);
+    background-image:
+      linear-gradient(rgba(255,255,255,0.04) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px);
+    background-size:48px 48px;
+    color:var(--text-secondary);
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--neon-20);color:#fff}
+  a{color:inherit;text-decoration:none}
+  code{font-family:var(--font-mono)}
+
+  .wrap{max-width:1040px;margin:0 auto;padding:0 32px}
+
+  /* ---------- NAV ---------- */
+  .nav{
+    position:sticky;top:0;z-index:100;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 32px;height:64px;
+    background:rgba(5,5,5,0.86);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  .nav__brand{display:flex;align-items:center;gap:10px;font-family:var(--font-heading);font-weight:700;font-size:15px;color:#fff;letter-spacing:-0.01em}
+  .nav__brand svg{display:block}
+  .nav__brand .tag{
+    font-family:var(--font-mono);font-size:9px;font-weight:700;letter-spacing:0.14em;
+    color:var(--bg);background:var(--neon);padding:2px 6px;border-radius:3px;text-transform:uppercase;
+  }
+  .nav__links{display:flex;align-items:center;gap:28px}
+  .nav__links a{
+    font-size:12px;color:var(--text-muted);letter-spacing:0.02em;
+    padding:4px 0;border-bottom:1px solid transparent;transition:color .15s, border-color .15s;
+  }
+  .nav__links a:hover, .nav__links a.active{color:var(--neon);border-color:var(--neon-40)}
+  .nav__meta{font-size:11px;color:var(--text-faint);letter-spacing:0.05em}
+  @media (max-width:760px){ .nav__links{display:none} }
+
+  /* ---------- HERO ---------- */
+  .hero{padding:104px 32px 72px;text-align:center;position:relative}
+  .hero::before{
+    content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);
+    width:60%;height:420px;pointer-events:none;
+    background:radial-gradient(ellipse at 50% 0%, var(--neon-10) 0%, transparent 65%);
+  }
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:10.5px;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-dim);
+    border:1px solid var(--border);border-radius:999px;padding:6px 14px;margin-bottom:28px;
+    background:var(--bg-card);
+  }
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--neon);box-shadow:0 0 8px var(--neon)}
+  .hero h1{
+    font-family:var(--font-heading);font-weight:700;
+    font-size:clamp(40px,6vw,68px);line-height:1.02;letter-spacing:-0.03em;color:#fff;
+    position:relative;
+  }
+  .hero h1 .accent{color:var(--neon)}
+  .hero p.lede{
+    max-width:600px;margin:22px auto 0;font-family:var(--font-heading);
+    font-size:17px;color:var(--text-secondary);line-height:1.6;position:relative;
+  }
+  .hero .ctas{display:flex;gap:12px;justify-content:center;margin-top:36px;position:relative}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:var(--font-mono);font-size:12.5px;font-weight:700;letter-spacing:0.03em;
+    padding:11px 20px;border-radius:6px;border:1px solid var(--border-light);
+    background:transparent;color:var(--text-secondary);cursor:pointer;transition:all .15s;
+  }
+  .btn--primary{background:var(--neon);color:#04140a;border-color:var(--neon)}
+  .btn--primary:hover{box-shadow:0 0 24px var(--neon-40)}
+  .btn:hover{border-color:var(--text-dim);color:#fff}
+  .btn .arr{transition:transform .15s}
+  .btn:hover .arr{transform:translateX(3px)}
+
+  /* stat strip */
+  .stats{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+    max-width:900px;margin:64px auto 0;
+    background:var(--border);border:1px solid var(--border);border-radius:10px;overflow:hidden;
+    position:relative;
+  }
+  .stat{
+    background:var(--bg-card);padding:22px 18px;text-align:center;position:relative;
+  }
+  .stat::before,.stat::after{
+    content:"";position:absolute;width:14px;height:14px;border-color:rgba(0,255,65,0.35);border-style:solid;pointer-events:none;
+  }
+  .stat::before{top:6px;left:6px;border-width:1.5px 0 0 1.5px}
+  .stat::after{bottom:6px;right:6px;border-width:0 1.5px 1.5px 0}
+  .stat__val{font-family:var(--font-heading);font-size:26px;font-weight:700;color:#fff}
+  .stat__label{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);margin-top:6px}
+  @media (max-width:700px){ .stats{grid-template-columns:repeat(2,1fr)} }
+
+  /* ---------- SECTION SHELL ---------- */
+  section{padding:88px 0}
+  section.tight{padding:56px 0}
+  .section-head{margin-bottom:44px}
+  .section-num{
+    font-size:11px;color:var(--neon);letter-spacing:0.15em;font-weight:700;margin-bottom:10px;
+  }
+  h2.h-section{
+    font-family:var(--font-heading);font-size:32px;font-weight:700;letter-spacing:-0.02em;color:#fff;
+  }
+  p.h-sub{max-width:620px;margin-top:12px;font-family:var(--font-heading);font-size:15px;color:var(--text-muted);line-height:1.7}
+  .divider{height:1px;background:linear-gradient(90deg,transparent,var(--border-light) 20%,var(--border-light) 80%,transparent)}
+
+  /* ---------- PIPELINE ---------- */
+  .pipeline{display:flex;flex-direction:column;gap:0;border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--bg-card)}
+  .pstep{display:grid;grid-template-columns:64px 1fr auto;gap:18px;align-items:center;padding:20px 24px;border-bottom:1px solid var(--border)}
+  .pstep:last-child{border-bottom:none}
+  .pstep__num{
+    width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    border:1px solid var(--neon-30);color:var(--neon);font-weight:700;font-size:13px;background:var(--neon-08);
+  }
+  .pstep__name{font-family:var(--font-heading);font-weight:700;color:#fff;font-size:15px}
+  .pstep__role{font-size:11.5px;color:var(--text-dim);margin-top:2px}
+  .pstep__desc{grid-column:2/3;font-size:12.5px;color:var(--text-muted);margin-top:6px;max-width:520px}
+  .pstep__tag{font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-dim);border:1px solid var(--border-light);padding:4px 9px;border-radius:5px;white-space:nowrap}
+  .pstep__tag.blocked{color:var(--red);border-color:rgba(255,68,68,.35);background:rgba(255,68,68,.06)}
+  @media (max-width:640px){ .pstep{grid-template-columns:1fr auto} .pstep__desc{grid-column:1/-1;padding-left:0} }
+
+  /* ---------- MODULE CARDS ---------- */
+  .module{
+    border:1px solid var(--border);border-radius:10px;background:var(--bg-card);
+    padding:32px;margin-bottom:22px;position:relative;overflow:hidden;transition:border-color .2s, transform .2s, box-shadow .2s;
+    scroll-margin-top:84px;
+  }
+  .module:hover{border-color:var(--neon-30);box-shadow:0 0 30px rgba(0,255,65,0.06),0 8px 30px rgba(0,0,0,0.5)}
+  .module::before{
+    content:"";position:absolute;top:0;left:0;right:0;height:2px;
+    background:linear-gradient(90deg,transparent,var(--neon-30),transparent);
+  }
+  .module__head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .module__index{font-size:11px;color:var(--neon);letter-spacing:0.1em;font-weight:700;margin-bottom:6px}
+  .module__title{font-family:var(--font-heading);font-size:21px;font-weight:700;color:#fff;letter-spacing:-0.01em}
+  .module__lede{font-family:var(--font-heading);font-size:14px;color:var(--text-muted);margin-top:8px;max-width:560px;line-height:1.65}
+  .module__pill{font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-dim);border:1px solid var(--border-light);padding:5px 10px;border-radius:5px;white-space:nowrap;font-family:var(--font-mono)}
+
+  .feat-list{list-style:none;margin-top:20px;display:grid;gap:9px}
+  .feat-list li{font-size:12.5px;color:var(--text-secondary);display:flex;gap:10px;align-items:baseline}
+  .feat-list li::before{content:"→";color:var(--neon);flex-shrink:0;font-size:11px}
+
+  .snippet{
+    margin-top:20px;background:var(--bg);border:1px solid var(--border);border-left:2px solid var(--neon);
+    border-radius:6px;padding:14px 16px;font-size:11.5px;overflow-x:auto;
+  }
+  .snippet__label{font-size:9.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-faint);margin-bottom:10px}
+  .snippet pre{white-space:pre-wrap;color:var(--text-secondary);line-height:1.7}
+  .snippet .ts{color:var(--text-faint)}
+  .snippet .ag{color:var(--sage);margin:0 8px}
+  .snippet .ok{color:var(--neon)}
+  .snippet .warn{color:var(--amber)}
+  .snippet .k{color:var(--lime)}
+  .snippet .kw{color:var(--neon);font-weight:700}
+
+  .split2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px}
+  .split2 .pane{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:14px 16px}
+  .split2 .pane h6{font-size:10px;color:var(--text-faint);letter-spacing:0.06em;margin-bottom:8px;font-weight:700}
+  .split2 .pane p{font-size:12px;color:var(--text-secondary);line-height:1.6}
+  .split2 mark{background:transparent;font-weight:700}
+  .split2 .a mark{color:var(--amber)}
+  .split2 .b mark{color:var(--neon)}
+  @media (max-width:640px){ .split2{grid-template-columns:1fr} }
+
+  .verdict{
+    margin-top:14px;font-size:12px;color:var(--text-muted);
+    background:var(--neon-08);border:1px solid var(--neon-20);border-radius:6px;padding:12px 14px;
+  }
+  .verdict strong{color:var(--neon);font-family:var(--font-heading)}
+
+  .mini-table{width:100%;border-collapse:collapse;margin-top:18px;font-size:11.5px}
+  .mini-table th{
+    text-align:left;font-size:9.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-faint);
+    padding:8px 10px;border-bottom:1px solid var(--border-light);font-weight:700;
+  }
+  .mini-table td{padding:9px 10px;border-bottom:1px solid var(--border);color:var(--text-secondary)}
+  .mini-table tr:last-child td{border-bottom:none}
+  .status{display:inline-flex;align-items:center;gap:6px;font-size:11px}
+  .status .d{width:6px;height:6px;border-radius:50%}
+  .status.ok .d{background:var(--neon);box-shadow:0 0 6px var(--neon)}
+  .status.warn .d{background:var(--amber)}
+  .status.bad .d{background:var(--red)}
+
+  /* ---------- ARCHITECTURE ---------- */
+  .arch-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .arch-card{
+    border:1px solid var(--border);border-radius:8px;padding:20px;background:var(--bg-card);
+    transition:border-color .2s,transform .2s;
+  }
+  .arch-card:hover{border-color:var(--border-light);transform:translateY(-2px)}
+  .arch-card__label{font-size:9.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-faint);margin-bottom:8px}
+  .arch-card__name{font-family:var(--font-heading);font-weight:700;color:#fff;font-size:15px}
+  .arch-card__desc{font-size:12px;color:var(--text-muted);margin-top:8px;line-height:1.6}
+  @media (max-width:760px){ .arch-grid{grid-template-columns:1fr 1fr} }
+  @media (max-width:480px){ .arch-grid{grid-template-columns:1fr} }
+
+  /* ---------- STATUS ---------- */
+  .status-card{
+    border:1px solid var(--border);border-radius:10px;background:var(--bg-card);padding:0;overflow:hidden;
+  }
+  .status-row{display:flex;align-items:center;gap:14px;padding:16px 22px;border-bottom:1px solid var(--border)}
+  .status-row:last-child{border-bottom:none}
+  .status-row__name{font-family:var(--font-heading);font-weight:700;color:#fff;font-size:13.5px;min-width:220px}
+  .status-row__note{font-size:12px;color:var(--text-muted);flex:1}
+  .badge{font-size:10px;letter-spacing:0.06em;text-transform:uppercase;padding:5px 10px;border-radius:5px;font-weight:700;white-space:nowrap}
+  .badge--live{background:var(--neon-10);color:var(--neon);border:1px solid var(--neon-30)}
+  .badge--mock{background:rgba(242,183,5,0.1);color:var(--amber);border:1px solid rgba(242,183,5,0.3)}
+  .badge--none{background:rgba(255,68,68,0.08);color:var(--red);border:1px solid rgba(255,68,68,0.3)}
+  @media (max-width:640px){ .status-row{flex-wrap:wrap} .status-row__name{min-width:0;width:100%} }
+
+  /* ---------- FOOTER ---------- */
+  footer{border-top:1px solid var(--border);padding:40px 32px;margin-top:40px;position:relative}
+  footer::before{
+    content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);
+    width:280px;height:1px;background:linear-gradient(90deg,transparent,var(--neon-30),transparent);
+  }
+  .footer-inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+  .footer-inner .l{font-size:11.5px;color:var(--text-dim)}
+  .footer-inner .r{font-size:11px;color:var(--text-faint)}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav__brand">
+    <svg width="20" height="20" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+      <path d="M3 3 C 11 7, 11 15, 19 19" stroke="#C8D44C" stroke-width="2" stroke-linecap="round"/>
+      <path d="M3 19 C 11 15, 11 7, 19 3" stroke="#A6BD8F" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="3" cy="3" r="2.2" fill="#C8D44C"/>
+      <circle cx="19" cy="3" r="1.8" fill="#A6BD8F"/>
+      <circle cx="3" cy="19" r="1.8" fill="#A6BD8F"/>
+      <circle cx="19" cy="19" r="2.2" fill="#C8D44C"/>
+    </svg>
+    NexaHelix <span class="tag">docs</span>
+  </div>
+  <div class="nav__links" id="navLinks">
+    <a href="#overview">Overview</a>
+    <a href="#pipeline">Pipeline</a>
+    <a href="#modules">Modules</a>
+    <a href="#architecture">Architecture</a>
+    <a href="#status">Status</a>
+  </div>
+  <div class="nav__meta">v0.1 · pre-wiring</div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow"><span class="dot"></span> Requirements Intelligence Platform</div>
+    <h1>Every requirement,<br>traced back to <span class="accent">source</span>.</h1>
+    <p class="lede">NexaHelix turns scattered RFPs, tickets, and wiki pages into one governed knowledge graph — then keeps every specification it drafts honest about where it came from.</p>
+    <div class="ctas">
+      <a class="btn btn--primary" href="#pipeline">See how it works <span class="arr">→</span></a>
+      <a class="btn" href="#modules">Browse the 7 modules</a>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><div class="stat__val">7</div><div class="stat__label">Modules</div></div>
+      <div class="stat"><div class="stat__val">5</div><div class="stat__label">Pipeline agents</div></div>
+      <div class="stat"><div class="stat__val">1</div><div class="stat__label">Knowledge graph</div></div>
+      <div class="stat"><div class="stat__val">3</div><div class="stat__label">Spec formats</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- OVERVIEW -->
+  <section id="overview" class="tight">
+    <div class="section-head">
+      <div class="section-num">01 / OVERVIEW</div>
+      <h2 class="h-section">What NexaHelix is</h2>
+      <p class="h-sub">A single workspace for business analysts and engineers to turn unstructured requirements documents into a queryable, contradiction-checked, traceable knowledge base — with an AI pipeline doing the reading, and a human doing the deciding.</p>
+    </div>
+    <p style="font-size:13.5px;color:var(--text-secondary);max-width:720px;line-height:1.8;">
+      Enterprise migrations (ERP, WMS, CRM) drown in requirements scattered across RFPs, Confluence spaces,
+      Jira backlogs, and vendor PDFs. Nobody can say with confidence which document is authoritative, which
+      requirements contradict each other, or which specification a given clause actually produced. NexaHelix
+      ingests every source once, compiles it into a typed knowledge graph shared between prose and diagram,
+      and routes every disagreement to a human before it reaches a specification — so the artefact you ship
+      always knows exactly where it came from.
+    </p>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- PIPELINE -->
+  <section id="pipeline">
+    <div class="section-head">
+      <div class="section-num">02 / PIPELINE</div>
+      <h2 class="h-section">Six agents, one control room</h2>
+      <p class="h-sub">The Agent Orchestration Dashboard (Module 4) exposes every step of the orchestrated pipeline that turns a raw document into a graph-backed, human-approved fact — each step tracked as job state, each hand-off audited.</p>
+    </div>
+
+    <div class="pipeline">
+      <div class="pstep">
+        <div class="pstep__num">01</div>
+        <div>
+          <div class="pstep__name">Ingestion</div>
+          <div class="pstep__role">Parse · mask · extract</div>
+          <div class="pstep__desc">Splits PDFs, DOCX, and CSVs into typed chunks, masks PII and classifies sensitivity before anything reaches an LLM, then extracts candidate entities (tiered LLM with heuristic fallback).</div>
+        </div>
+        <div class="pstep__tag">step 1–2 of job</div>
+      </div>
+      <div class="pstep">
+        <div class="pstep__num">02</div>
+        <div>
+          <div class="pstep__name">Graph Agent</div>
+          <div class="pstep__role">Graph construction</div>
+          <div class="pstep__desc">Resolves entities against the existing graph, merges duplicates, and writes typed nodes and TRACES_TO / REFINES edges with provenance on every node.</div>
+        </div>
+        <div class="pstep__tag">step 3</div>
+      </div>
+      <div class="pstep">
+        <div class="pstep__num">03</div>
+        <div>
+          <div class="pstep__name">Governance Agent</div>
+          <div class="pstep__role">Ownership assignment</div>
+          <div class="pstep__desc">Links requirements that name an owner role to stakeholder nodes via OWNED_BY — and deliberately leaves unassigned roles visible as governance signal.</div>
+        </div>
+        <div class="pstep__tag">step 4</div>
+      </div>
+      <div class="pstep">
+        <div class="pstep__num">04</div>
+        <div>
+          <div class="pstep__name">Validator</div>
+          <div class="pstep__role">7 dimensions · conflicts</div>
+          <div class="pstep__desc">Runs the seven-dimension validation model and pairwise contradiction detection, writing CONTRADICTS edges that surface for human triage in Module 5.</div>
+        </div>
+        <div class="pstep__tag">step 5</div>
+      </div>
+      <div class="pstep">
+        <div class="pstep__num">05</div>
+        <div>
+          <div class="pstep__name">Router</div>
+          <div class="pstep__role">Wiki sync</div>
+          <div class="pstep__desc">Publishes eligible graph nodes to the versioned Markdown knowledge base that Module 2 explores.</div>
+        </div>
+        <div class="pstep__tag">step 6</div>
+      </div>
+      <div class="pstep">
+        <div class="pstep__num">06</div>
+        <div>
+          <div class="pstep__name">Story Writer</div>
+          <div class="pstep__role">Spec generation + review loop</div>
+          <div class="pstep__desc">On demand, turns graph context into User Stories, Gherkin, or BPMN — then the Validator reviews the draft and sends blocking findings back for a bounded revision round before it ships.</div>
+        </div>
+        <div class="pstep__tag">on generate</div>
+      </div>
+    </div>
+
+    <div class="snippet" style="margin-top:20px;">
+      <div class="snippet__label">agent-stream · GET /api/v1/agents/activity</div>
+      <pre><span class="ts">14:08:24</span><span class="ag">story_writer</span>generate · iteration 1
+<span class="ts">14:08:25</span><span class="ag">validator</span><span class="warn">→ revision requested [testability/medium] · lacks measurable expected result</span>
+<span class="ts">14:08:25</span><span class="ag">validator</span><span class="warn">→ revision requested [ambiguity/medium] · no actor identified</span>
+<span class="ts">14:08:26</span><span class="ag">story_writer</span>superseded stale acceptance criterion · generate · iteration 2
+<span class="ts">14:08:27</span><span class="ag">validator</span><span class="ok">✓ review clean · 0 blocking findings · loop closed</span></pre>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- MODULES -->
+  <section id="modules">
+    <div class="section-head">
+      <div class="section-num">03 / MODULES</div>
+      <h2 class="h-section">The seven surfaces</h2>
+      <p class="h-sub">Each module is a stop along the same pipeline — from raw file to signed-off specification — with its own view into the underlying graph.</p>
+    </div>
+
+    <!-- M1 -->
+    <article class="module" id="m1-doc">
+      <div class="module__head">
+        <div>
+          <div class="module__index">MODULE 01 · INGEST</div>
+          <div class="module__title">Document Ingestion Hub</div>
+        </div>
+        <span class="module__pill">SHA-256 · MIME validated</span>
+      </div>
+      <p class="module__lede">Upload, connect, and govern every source that feeds the knowledge graph. Nothing enters the AI pipeline without review.</p>
+      <ul class="feat-list">
+        <li>Drag-and-drop plus live connectors for Jira, Confluence, and Azure DevOps (OAuth 2.0)</li>
+        <li>Five-stage pipeline per file: validation → OCR extract → anonymization → chunking → graph index</li>
+        <li>A governance rule table masks PII before any text reaches an LLM call — not after</li>
+        <li>Full ingestion audit log: tokens, chunks, PII hits, and duration per source</li>
+      </ul>
+      <div class="snippet">
+        <div class="snippet__label">governance · pii rules applied before any llm call</div>
+        <pre>Email      <span class="k">[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}</span>   → [EMAIL_n]
+Phone      <span class="k">\+?[1-9]\d{1,14}</span>                        → [REDACTED]
+IPv4       <span class="k">\b\d{1,3}(\.\d{1,3}){3}\b</span>               → SHA-256
+Bearer     <span class="k">(?i)bearer\s+[A-Za-z0-9._\-]+</span>          → [REDACTED]  <span class="ts">(off by default)</span></pre>
+      </div>
+    </article>
+
+    <!-- M2 -->
+    <article class="module" id="m2-doc">
+      <div class="module__head">
+        <div>
+          <div class="module__index">MODULE 02 · KNOWLEDGE BASE</div>
+          <div class="module__title">Knowledge Base Explorer</div>
+        </div>
+        <span class="module__pill">wiki ⇄ graph</span>
+      </div>
+      <p class="module__lede">A synchronized wiki and graph. Every entity in prose maps to a node — and back.</p>
+      <ul class="feat-list">
+        <li>Sidebar tree organizes nodes by Domain, Actor, System, and Feature</li>
+        <li>Inline entities in the wiki article are clickable — they open the same node the graph shows</li>
+        <li>Every article carries a version history distinguishing human edits from Compiler Agent auto-merges</li>
+        <li>A local-context minimap (depth 1) keeps the immediate neighborhood visible while you read</li>
+      </ul>
+      <div class="snippet">
+        <div class="snippet__label">wiki article · wms core engine</div>
+        <pre>The <span class="k">WMS Core Engine</span> is the central warehouse management subsystem
+deployed in the <span class="k">Order Management</span> domain. It <span class="kw">depends_on</span> <span class="k">SAP ECC</span>
+for inventory reconciliation and <span class="kw">triggers</span> the <span class="k">Notification Service</span>
+on stock-out events. <span class="ts">Sources: ERP_RFP_v3.pdf §2.2 · Jira ACME-ERP-184</span></pre>
+      </div>
+    </article>
+
+    <!-- M3 -->
+    <article class="module" id="m3-doc">
+      <div class="module__head">
+        <div>
+          <div class="module__index">MODULE 03 · GRAPH</div>
+          <div class="module__title">Graph Visualizer</div>
+        </div>
+        <span class="module__pill">NL or Cypher</span>
+      </div>
+      <p class="module__lede">The full project topology. Pan, zoom, filter, and query — by natural language or Cypher.</p>
+      <ul class="feat-list">
+        <li>Query bar accepts plain English ("show all systems connected to Order Management") or raw Cypher</li>
+        <li>Four relationship types rendered distinctly: DEPENDS_ON, CONTRADICTS, TRIGGERS, MANAGED_BY</li>
+        <li>Selecting any node opens an inspector with its type, description, edges, and exact source citation</li>
+        <li>An accessible data-table view mirrors the canvas for non-visual navigation</li>
+      </ul>
+      <div class="snippet">
+        <div class="snippet__label">query bar · natural language mode</div>
+        <pre><span class="ts">&gt;</span> show all systems connected to Order Management
+
+<span class="ok">MATCH</span> (d:Domain {name:"Order Management"})-[:DEPENDS_ON|TRIGGERS]-(s:System)
+<span class="ok">RETURN</span> s.name, type(r)</pre>
+      </div>
+    </article>
+
+    <!-- M4 -->
+    <article class="module" id="m4-doc">
+      <div class="module__head">
+        <div>
+          <div class="module__index">MODULE 04 · AGENTS</div>
+          <div class="module__title">Agent Orchestration Dashboard</div>
+        </div>
+        <span class="module__pill">GET /agents/status</span>
+      </div>
+      <p class="module__lede">A transparent control room for the orchestrated pipeline. Every step, every hand-off, every decision — sourced from the audit log.</p>
+      <ul class="feat-list">
+        <li>Live per-agent cards for all six agents — status, last event, and activity counts from <code>GET /agents/status</code></li>
+        <li>A terminal stream of real audit events (agent steps, revision requests, loop-guard activations) from <code>GET /agents/activity</code></li>
+        <li>Per-job step tracking: each ingestion advances parser → ingestion → graph → governance → validator → router, with failed steps retryable</li>
+        <li>Falls back to a demo stream when the backend is offline — clearly bannered, never silently fake</li>
+      </ul>
+      <div class="mini-table" style="margin-top:20px;">
+        <table style="width:100%;border-collapse:collapse;">
+          <thead><tr><th>Agent</th><th>Role</th><th>Source</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>Ingestion Agent</td><td>PII masking · extraction</td><td>audit log</td><td><span class="status ok"><span class="d"></span>Live</span></td></tr>
+            <tr><td>Graph Agent</td><td>Knowledge-graph construction</td><td>audit log</td><td><span class="status ok"><span class="d"></span>Live</span></td></tr>
+            <tr><td>Governance Agent</td><td>Ownership assignment</td><td>audit log</td><td><span class="status ok"><span class="d"></span>Live</span></td></tr>
+            <tr><td>Validator Agent</td><td>7-dimension validation · review</td><td>audit log</td><td><span class="status ok"><span class="d"></span>Live</span></td></tr>
+            <tr><td>Router Agent</td><td>Wiki sync</td><td>audit log</td><td><span class="status ok"><span class="d"></span>Live</span></td></tr>
+            <tr><td>Story Writer Agent</td><td>Spec generation + revisions</td><td>audit log</td><td><span class="status ok"><span class="d"></span>Live</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </article>
+
+    <!-- M5 -->
+    <article class="module" id="m5-doc">
+      <div class="module__head">
+        <div>
+          <div class="module__index">MODULE 05 · CONFLICTS</div>
+          <div class="module__title">Contradiction &amp; Validation Report</div>
+        </div>
+        <span class="module__pill">human-in-the-loop</span>
+      </div>
+      <p class="module__lede">Triage every conflict the Critic Agent has surfaced — and leave with decisions made.</p>
+      <ul class="feat-list">
+        <li>Conflicts are classed Logical, Ambiguity, or Missing link, each with a severity from Low to Critical</li>
+        <li>Every conflict shows both source passages side by side, with the disputed values highlighted</li>
+        <li>The Critic Agent proposes a resolution with its reasoning — accept, hand-edit, or dismiss as false positive</li>
+        <li>Every decision is appended to an audit trail: detection time, escalation time, linked open question</li>
+      </ul>
+      <div class="split2">
+        <div class="pane a">
+          <h6>SOURCE A · ERP_RFP_v3.pdf §3.4</h6>
+          <p>"Backorder resolution shall be completed within <mark>forty-eight (48) hours</mark> from notification that the SKU is unavailable."</p>
+        </div>
+        <div class="pane b">
+          <h6>SOURCE B · Migration_Scope_Final.docx §4.7</h6>
+          <p>"All backorder events are governed by the tier-1 service level, requiring resolution within <mark>24 hours</mark> of trigger."</p>
+        </div>
+      </div>
+      <div class="verdict"><strong>Critic's proposed fix →</strong> Set <code>Backorder.sla_hours = 24</code>, sourced to the later document; open a question for Procurement Lead before Sprint 3 closes.</div>
+    </article>
+
+    <!-- M6 -->
+    <article class="module" id="m6-doc">
+      <div class="module__head">
+        <div>
+          <div class="module__index">MODULE 06 · SPECIFICATIONS</div>
+          <div class="module__title">Specification Generator</div>
+        </div>
+        <span class="module__pill">User Story · Gherkin · BPMN</span>
+      </div>
+      <p class="module__lede">From graph context to engineering blueprint — in any standard your team uses.</p>
+      <ul class="feat-list">
+        <li>Scope is selected directly on a mini graph — pick the nodes, not a document range</li>
+        <li>Output format toggles between User Story, Gherkin (BDD), and BPMN process notation</li>
+        <li>Traceability references and open questions can be embedded inline in the generated draft</li>
+        <li>Drafts are hand-editable, diffable against the AI's original, and exportable to Jira or Azure DevOps</li>
+      </ul>
+      <div class="snippet">
+        <div class="snippet__label">draft · feature: multi-warehouse backorder fulfilment</div>
+        <pre><span class="kw">Scenario:</span> Primary warehouse is out of stock for an active order
+  <span class="kw">Given</span> an order for SKU "AC-118" exists with a primary warehouse of "WH-NYC"
+  <span class="kw">And</span> the WMS Core Engine reports 0 available units at WH-NYC
+  <span class="kw">When</span> the Backorder workflow is triggered
+  <span class="kw">Then</span> the Order Hub API queries all secondary warehouses for available stock
+  <span class="kw">And</span> the customer notification is sent within 24 hours
+  <span class="kw">And</span> a traceability event is logged with source ERP_RFP_v3.pdf §3.4</pre>
+      </div>
+    </article>
+
+    <!-- M7 -->
+    <article class="module" id="m7-doc">
+      <div class="module__head">
+        <div>
+          <div class="module__index">MODULE 07 · TRACEABILITY</div>
+          <div class="module__title">Traceability Matrix</div>
+        </div>
+        <span class="module__pill">source → node → spec</span>
+      </div>
+      <p class="module__lede">Every artefact links back to source. Every requirement yields a spec. Gaps are surfaced, not hidden.</p>
+      <ul class="feat-list">
+        <li>One row per source chunk: document, graph node, resulting specification, owning module, link status</li>
+        <li>Orphan nodes (no downstream spec) and dead-end specs (no source chunk) are flagged, not hidden</li>
+        <li>Filterable to orphans-only, dead-ends-only, or rows linked to an open question</li>
+        <li>Exports as CSV or a self-contained HTML report for stakeholder sign-off</li>
+      </ul>
+      <table class="mini-table">
+        <thead><tr><th>Source chunk</th><th>Graph node</th><th>Specification</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>CHK-00184</td><td>WMS Core Engine</td><td>Spec-OM-001</td><td><span class="status ok"><span class="d"></span>Linked</span></td></tr>
+          <tr><td>CHK-00193</td><td>Backorder workflow</td><td>Spec-OM-007</td><td><span class="status ok"><span class="d"></span>Linked · OQ-1</span></td></tr>
+          <tr><td>CHK-00211</td><td>Finance Controller</td><td>—</td><td><span class="status warn"><span class="d"></span>Orphan</span></td></tr>
+          <tr><td>—</td><td>—</td><td>Spec-AR-091</td><td><span class="status bad"><span class="d"></span>Dead-end</span></td></tr>
+        </tbody>
+      </table>
+    </article>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ARCHITECTURE -->
+  <section id="architecture">
+    <div class="section-head">
+      <div class="section-num">04 / ARCHITECTURE</div>
+      <h2 class="h-section">What it's built on</h2>
+      <p class="h-sub">The stack referenced throughout the prototype's pipeline, graph, and client layers.</p>
+    </div>
+    <div class="arch-grid">
+      <div class="arch-card">
+        <div class="arch-card__label">Orchestration</div>
+        <div class="arch-card__name">Deterministic orchestrator</div>
+        <div class="arch-card__desc">A six-step job state machine (parser → ingestion → graph → governance → validator → router) plus a bounded validator ↔ story-writer review loop with loop guard — every hand-off written to the audit log.</div>
+      </div>
+      <div class="arch-card">
+        <div class="arch-card__label">Graph store</div>
+        <div class="arch-card__name">NetworkX / Neo4j</div>
+        <div class="arch-card__desc">Pluggable store — in-memory NetworkX by default, Neo4j via <code>NEO4J_URI</code>. Typed ontology nodes (Requirement, BusinessRule, Feature, Stakeholder…) and edges (TRACES_TO, REFINES, IMPLEMENTS, TESTED_BY, OWNED_BY, CONTRADICTS).</div>
+      </div>
+      <div class="arch-card">
+        <div class="arch-card__label">Document parsing</div>
+        <div class="arch-card__name">pypdf · python-docx · csv</div>
+        <div class="arch-card__desc">Format-specific parsers split ingested files into typed chunks with section metadata, ahead of PII masking and sensitivity classification.</div>
+      </div>
+      <div class="arch-card">
+        <div class="arch-card__label">LLM backend</div>
+        <div class="arch-card__name">Tiered: Haiku (T1) → Sonnet (T2)</div>
+        <div class="arch-card__desc">Fast tier for pattern-confirmable work, escalating on low extraction confidence; deterministic heuristic fallback when no key is set; Confidential content routes to a local model only.</div>
+      </div>
+      <div class="arch-card">
+        <div class="arch-card__label">Client</div>
+        <div class="arch-card__name">NexaHelixAPI</div>
+        <div class="arch-card__desc">REST client (get / post / postForm / put) targeting <code>localhost:8765/api/v1</code> — the seam every module reads and writes through, with timeout handling and an offline demo mode.</div>
+      </div>
+      <div class="arch-card">
+        <div class="arch-card__label">Governance</div>
+        <div class="arch-card__name">Pre-LLM redaction + ownership</div>
+        <div class="arch-card__desc">Regex masking (email, phone, IPv4, API keys) before any model call; sensitivity and PII flags stored per graph node; a governance agent materializes OWNED_BY links and deliberately leaves unassigned roles visible.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- STATUS -->
+  <section id="status">
+    <div class="section-head">
+      <div class="section-num">05 / STATUS</div>
+      <h2 class="h-section">Build status</h2>
+      <p class="h-sub">In the spirit of the traceability this product preaches — here's exactly what's real today, and what's still a drawing.</p>
+    </div>
+    <div class="status-card">
+      <div class="status-row">
+        <div class="status-row__name">Frontend · 7 modules</div>
+        <div class="status-row__note">All seven tabs consume the live API: uploads track real job progress, conflicts resolve against the graph, generation shows its review iterations, and every KPI is computed from the same response that renders the detail beneath it. When the backend is down, the UI degrades to a clearly bannered demo mode instead of breaking.</div>
+        <span class="badge badge--live">Wired</span>
+      </div>
+      <div class="status-row">
+        <div class="status-row__name">NexaHelixAPI client</div>
+        <div class="status-row__note">Implemented in-page (fetch with timeout, offline detection, form and JSON bodies) with live call sites across all seven modules via a per-tab loader registry.</div>
+        <span class="badge badge--live">Wired</span>
+      </div>
+      <div class="status-row">
+        <div class="status-row__name">Ingestion, graph, agent pipeline</div>
+        <div class="status-row__note">FastAPI backend with six agents, per-step job tracking with retry, an orchestrated validator ↔ story-writer review loop, and QC metrics endpoints. Benchmarked against a labeled corpus: contradiction precision 1.00 / recall 0.80, owner coverage 100%. 40 backend + 31 UI tests.</div>
+        <span class="badge badge--live">Built</span>
+      </div>
+      <div class="status-row">
+        <div class="status-row__name">This document</div>
+        <div class="status-row__note">Describes NexaHelix as built — backend, wired frontend, and benchmark status current as of July 2026.</div>
+        <span class="badge badge--live">Accurate</span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap footer-inner">
+    <div class="l">NexaHelix — Requirements Intelligence</div>
+    <div class="r">Prototype documentation · generated for internal reference</div>
+  </div>
+</footer>
+
+<script>
+  const links = document.querySelectorAll('.nav__links a');
+  const sections = Array.from(links).map(a => document.querySelector(a.getAttribute('href')));
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = '#' + entry.target.id;
+        links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === id));
+      }
+    });
+  }, { rootMargin: '-40% 0px -55% 0px' });
+  sections.forEach(s => s && obs.observe(s));
+</script>
+
+</body>
+</html>
